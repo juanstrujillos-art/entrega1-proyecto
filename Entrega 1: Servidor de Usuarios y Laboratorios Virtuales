@@ -1,0 +1,9 @@
+1. virtuallab_functions.py (Nuestra Lógica)
+
+Es el archivo principal donde desarrollamos las funciones solicitadas para la gestión del sistema:
+
+Gestión de usuarios: Permite registrar usuarios guardando su información (nombre, ID, rol y contraseña) en el archivo server/users.txt en formato JSON, verificando que no existan duplicados. También contiene la lógica para iniciar (openSession) y cerrar sesión (closeSession).
+
+Acciones del Profesor: Contiene las funciones para subir archivos de laboratorio .zip a la carpeta server/labs, consultar la lista de estudiantes registrados y asignar guías a los estudiantes.
+
+Acciones del Estudiante: Permite consultar los laboratorios asignados y descargar los archivos .zip correspondientes.
