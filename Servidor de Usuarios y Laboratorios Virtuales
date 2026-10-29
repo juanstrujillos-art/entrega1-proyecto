@@ -6,3 +6,11 @@ Gestión de usuarios: Permite registrar usuarios guardando su información (nomb
 Acciones del Profesor: Contiene las funciones para subir archivos de laboratorio .zip a la carpeta server/labs, consultar la lista de estudiantes registrados y asignar guías a los estudiantes.
 
 Acciones del Estudiante: Permite consultar los laboratorios asignados y descargar los archivos .zip correspondientes.
+2. virtuallab_server.py (Servidor HTTP)
+Es el código base del servidor suministrado por el docente. Se encarga de atender la red local, recibir las peticiones HTTP (como /register, /login, /upload_lab o /download_lab) y direccionar cada solicitud a su correspondiente función dentro de virtuallab_functions.py.
+
+3. virtuallab_client.py (Módulo Cliente)
+Es el script suministrado que sirve como puente de comunicación. Se encarga de enviar las peticiones HTTP desde el equipo cliente hacia la IP donde está corriendo el servidor.
+
+4. test_virtuallab_client.py (Script de Pruebas)
+Es el archivo que utilizamos para verificar que nuestro servidor funcione correctamente. Desde aquí ejecutamos las pruebas llamando secuencialmente a cada endpoint (registro, inicio de sesión, carga/descarga de laboratorios y consultas) para corroborar la respuesta esperada.
