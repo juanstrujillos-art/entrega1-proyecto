@@ -2,7 +2,7 @@
 # Pruebas del codigo:
 
 <img width="758" height="487" alt="image" src="https://github.com/user-attachments/assets/81796015-9897-431d-886c-1042bef03b5f" />
-# Pruebas del codigo:
+# Pruebas del unitarias:
 
 <img width="756" height="527" alt="image" src="https://github.com/user-attachments/assets/b35beb59-d83e-4de2-988d-e1659a9d55a5" />
 # Pruebas unitarias:
