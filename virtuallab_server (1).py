@@ -1,10 +1,11 @@
-
 import argparse
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from json import dumps
-import virtuallab_functions
+import virtuallab_functions_implementado as virtuallab_functions
+
+
 
 
 class Server(HTTPServer):
@@ -12,20 +13,25 @@ class Server(HTTPServer):
         super().__init__(address, request_handler)
 
 
+
+
 class RequestHandler(BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server_class):
         self.server_class = server_class
         super().__init__(request, client_address, server_class)
 
+
     def do_GET(self):
         resource=urlparse(self.path).path
         match resource:
-                    
+                   
             case '/download_lab':    
                 id = self.headers.get('X-Client-ID')
                 filename = self.headers.get('X-File-Name')                
 
+
                 data=virtuallab_functions.downloadLab(id,filename)
+
 
                 if data == "error":
                     self.send_response(404)
@@ -39,9 +45,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                     self.send_header("Content-Length", str(len(data)))            
                     self.end_headers()                                        
                     self.wfile.write(data)
-                    
-            
-        
+                   
+           
+       
             case '/list_student_labs':
                 content_len = int(self.headers.get('Content-Length'))
                 post_body = self.rfile.read(content_len)
@@ -54,6 +60,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(str(response).encode('utf8'))
                 self.wfile.flush()
 
+
             case '/list_professors_labs':
                 content_len = int(self.headers.get('Content-Length'))
                 post_body = self.rfile.read(content_len)
@@ -65,7 +72,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(str(response).encode('utf8'))
                 self.wfile.flush()
-            
+           
             case '/list_students':
                 content_len = int(self.headers.get('Content-Length'))
                 post_body = self.rfile.read(content_len)
@@ -80,6 +87,9 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 
+
+
+
     def do_POST(self):
         resource=urlparse(self.path).path
         print(resource)
@@ -89,6 +99,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 post_body = self.rfile.read(content_len)
                 params_dict=parse_qs(post_body.decode(), strict_parsing=True)
                 response=virtuallab_functions.registerUser(params_dict['name'][0],params_dict['id'][0],params_dict['role'][0],params_dict['password'][0])
+
 
             case "/login":
                 content_len = int(self.headers.get('Content-Length'))
@@ -101,12 +112,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 params_dict=parse_qs(post_body.decode(), strict_parsing=True)
                 response=virtuallab_functions.closeSession(params_dict['id'][0])
 
+
             case "/upload_lab":
                 file_name = self.headers.get('X-File-Name', 'lab0.zip')
                 id = self.headers.get('X-Client-ID')
                 content_len = int(self.headers.get('Content-Length'))
                 file_data = self.rfile.read(content_len)
                 response=virtuallab_functions.uploadLab(id,file_name,file_data)
+
 
             case "/assign_lab":
                 content_len = int(self.headers.get('Content-Length'))
@@ -117,9 +130,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 
-        
-        
-        
+
+
+
+
+       
+       
+       
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.send_header("Content-Length", str(len(response)))
@@ -127,11 +144,14 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(str(response).encode('utf8'))
         self.wfile.flush()
 
+
 def start_server(addr, port, server_class=Server, handler_class=RequestHandler):
     server_address = (addr, port)
     http_server = server_class(server_address, handler_class)
     print(f"Starting server on {addr}:{port}")
     http_server.serve_forever()
+
+
 
 
 def main():
@@ -153,5 +173,8 @@ def main():
     start_server(addr=args.listen, port=args.port)
 
 
+
+
 if __name__ == "__main__":
     main()
+
