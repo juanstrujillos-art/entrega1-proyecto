@@ -1,4 +1,4 @@
-import zipfile
+# Instalar el módulo requests haciendo desde una terminal: pip install requests
 import requests
 import os
 
@@ -36,70 +36,17 @@ def uploadLab(url,id,file_path):
 
 
 # Función para recibir una práctica de laboratorio
-
-
-def downloadLab(url, id, file_name):
-
-
-    headers = {
-        'X-File-Name': file_name,
-        'X-Client-ID': str(id)
-    }
-
-
-    try:
-        response = requests.get(
-            url + '/download_lab',
-            headers=headers,
-            timeout=30
-        )
-
-
-        print("Estado HTTP:", response.status_code)
-        print("Tipo de respuesta:", response.headers.get("Content-Type"))
-        print("Tamaño recibido:", len(response.content), "bytes")
-
-
-        # Comprobar respuesta del servidor
-        response.raise_for_status()
-
-
-        if not response.content:
-            raise Exception("El servidor devolvió un archivo vacío.")
-
-
-        download_dir = os.path.join("client", "labs")
-        os.makedirs(download_dir, exist_ok=True)
-
-
-        target_path = os.path.join(download_dir, file_name)
-
-
-        # Guardar archivo
-        with open(target_path, "wb") as f:
-            f.write(response.content)
-
-
-        # Comprobar que sea un ZIP válido
-        if not zipfile.is_zipfile(target_path):
-            os.remove(target_path)
-            raise Exception(
-                "El archivo recibido no es un ZIP válido. "
-                "Verifique el servidor."
-            )
-
-
-        print("ZIP descargado correctamente:", target_path)
-
-
-        return target_path
-
-
-    except Exception as e:
-        print("Error al descargar laboratorio:", str(e))
-        raise
-
-
+def downloadLab(url,id,file_name):    
+    headers = {'X-File-Name': file_name,'X-Client-ID': str(id)    }
+    response=requests.get(url+'/download_lab',headers=headers)
+    download_dir = "client/labs"
+    os.makedirs(download_dir, exist_ok=True)
+    target_path = os.path.join(download_dir, file_name)
+   
+    with open(target_path, "wb") as f:
+        f.write(response.content)
+        return f"File {file_name} downloaded to {target_path}"
+   
    
 
 
@@ -125,7 +72,3 @@ def listStudents(url,id):
 def assignLab(url,id,lab_name,student_id):    
     response=requests.post(url+'/assign_lab',data=f'id={id}&lab_name={lab_name}&student_id={student_id}')
     return response.content.decode('utf-8')
-dent_id}')
-    return response.content.decode('utf-8')
-
-
