@@ -1,5 +1,3 @@
-
-entorno_pruebas
 import io
 import os
 import tempfile
